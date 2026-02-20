@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 
 const EMBED = JSON.stringify({
   version: "1",
-  imageUrl: "https://unicornmeateth.com/og-farcaster.png",
+  imageUrl: "https://unicorn-meat-frame.vercel.app/og-farcaster.png",
   button: {
     title: "🍖 Grind Meat",
     action: {
       type: "launch_frame",
       name: "Unicorn Meat",
-      url: "https://meat.unicornmeateth.com",
-      splashImageUrl: "https://unicornmeateth.com/logo-200.png",
+      url: "https://unicorn-meat-frame.vercel.app",
+      splashImageUrl: "https://unicorn-meat-frame.vercel.app/logo-200.png",
       splashBackgroundColor: "#0a2a2a",
     },
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Unicorn Meat 🍖",
     description: "The OG Ethereum token, now on Base",
-    images: ["https://unicornmeateth.com/og-farcaster.png"],
+    images: ["https://unicorn-meat-frame.vercel.app/og-farcaster.png"],
   },
 };
 

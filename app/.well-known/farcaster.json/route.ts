@@ -16,20 +16,20 @@ export async function GET() {
     frame: {
       version: "1",
       name: "Unicorn Meat",
-      iconUrl: "https://unicornmeateth.com/logo-200.png",
-      homeUrl: "https://meat.unicornmeateth.com",
-      splashImageUrl: "https://unicornmeateth.com/logo-200.png",
+      iconUrl: "https://unicorn-meat-frame.vercel.app/logo-200.png",
+      homeUrl: "https://unicorn-meat-frame.vercel.app",
+      splashImageUrl: "https://unicorn-meat-frame.vercel.app/logo-200.png",
       splashBackgroundColor: "#0a2a2a",
       subtitle: "The OG Ethereum Token on Base",
       description:
         "Unicorn Meat — born in 2016 from the original Unicorn contract on Ethereum, now on Base. Swap w🍖 directly from Farcaster.",
       primaryCategory: "social",
       tags: ["defi", "meme", "ethereum", "base", "history"],
-      heroImageUrl: "https://unicornmeateth.com/og-farcaster.png",
+      heroImageUrl: "https://unicorn-meat-frame.vercel.app/og-farcaster.png",
       tagline: "Grind some meat 🔪🦄🍖",
       ogTitle: "Unicorn Meat 🍖",
       ogDescription: "The OG Ethereum token, now on Base. Swap directly in Farcaster.",
-      ogImageUrl: "https://unicornmeateth.com/og-farcaster.png",
+      ogImageUrl: "https://unicorn-meat-frame.vercel.app/og-farcaster.png",
     },
   });
 }
