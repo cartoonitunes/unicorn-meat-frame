@@ -9,9 +9,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   return NextResponse.json({
     accountAssociation: {
-      header: "PLACEHOLDER_NEEDS_SIGNING",
-      payload: "PLACEHOLDER",
-      signature: "PLACEHOLDER",
+      header: "eyJmaWQiOjExNDg2NDksInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg1ZTcyQ0FGRDcxZmQxZkQ3QjUyMmQ3MWZjY0QxYTcyMTIwRmZBMjY5In0",
+      payload: "eyJkb21haW4iOiJ1bmljb3JuLW1lYXQtZnJhbWUudmVyY2VsLmFwcCJ9",
+      signature: "iM9DUC1X3sQSzhAp8FIZ/0P5iwbRgut+9LgRF83fH5EU4Qa2wFPMu2nzLTagrSZy5aS4Wl69+NNykvAlslWjQRs=",
     },
     frame: {
       version: "1",
