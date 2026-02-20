@@ -14,13 +14,13 @@ export default function Home() {
   useEffect(() => {
     sdk.actions.ready();
 
-    // Fetch price from GeckoTerminal
+    // Fetch price from GeckoTerminal pool endpoint
     fetch(
-      `https://api.geckoterminal.com/api/v2/networks/base/tokens/${W_MEAT_BASE}`
+      "https://api.geckoterminal.com/api/v2/networks/base/pools/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578"
     )
       .then((r) => r.json())
       .then((data) => {
-        const p = data?.data?.attributes?.price_usd;
+        const p = data?.data?.attributes?.base_token_price_usd;
         if (p) setPrice(parseFloat(p).toFixed(6));
       })
       .catch(() => {});
@@ -44,13 +44,11 @@ export default function Home() {
   }, []);
 
   const handleViewToken = useCallback(async () => {
+    const chartUrl = "https://www.geckoterminal.com/base/pools/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578";
     try {
-      await sdk.actions.viewToken({
-        token: BUY_TOKEN,
-      });
+      await sdk.actions.openUrl(chartUrl);
     } catch {
-      // Fallback: open in browser
-      sdk.actions.openUrl("https://www.geckoterminal.com/base/tokens/" + W_MEAT_BASE);
+      window.open(chartUrl, "_blank");
     }
   }, []);
 
