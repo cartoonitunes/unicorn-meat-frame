@@ -10,6 +10,8 @@ const SELL_TOKEN = "eip155:8453/native"; // Base ETH
 export default function Home() {
   const [price, setPrice] = useState<string | null>(null);
   const [swapResult, setSwapResult] = useState<string | null>(null);
+  const [quoteText, setQuoteText] = useState<string | null>(null);
+  const [ethAmount, setEthAmount] = useState("0.01");
 
   useEffect(() => {
     sdk.actions.ready();
@@ -34,7 +36,7 @@ export default function Home() {
         sellToken: SELL_TOKEN,
       });
       if (result.success) {
-        setSwapResult("🍖 Meat acquired! Tx: " + result.swap.transactions[0]?.slice(0, 10) + "...");
+        setSwapResult("Meat acquired! Tx: " + result.swap.transactions[0]?.slice(0, 10) + "...");
       } else {
         setSwapResult(result.reason === "rejected_by_user" ? "Cancelled" : "Swap failed");
       }
@@ -42,6 +44,45 @@ export default function Home() {
       setSwapResult("Swap not available in this client");
     }
   }, []);
+
+  const handleQuote = useCallback(async () => {
+    setQuoteText(null);
+    try {
+      const provider = await sdk.wallet.getEthereumProvider();
+      if (!provider) throw new Error("Wallet provider unavailable");
+      const accounts = (await provider.request({ method: "eth_requestAccounts" })) as string[];
+      const swapper = accounts?.[0];
+      if (!swapper) throw new Error("No wallet connected");
+
+      const [whole, frac = ""] = ethAmount.split(".");
+      const fracPadded = (frac + "000000000000000000").slice(0, 18);
+      const amountWei = `${whole || "0"}${fracPadded}`.replace(/^0+/, "") || "0";
+
+      const res = await fetch("/api/uniswap/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          swapper,
+          amount: amountWei,
+          tokenIn: "0x0000000000000000000000000000000000000000",
+          tokenOut: "0xa0ff877E3d4f3a108B1B3d5eB3e4369301D2b2D7",
+          chainId: 8453,
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || "Quote failed");
+
+      const out = data?.data?.quote?.output?.amount;
+      if (!out) throw new Error("No quote output");
+
+      const outHuman = (Number(out) / 1000).toLocaleString(undefined, { maximumFractionDigits: 3 });
+      const gasUsd = data?.data?.quote?.gasFeeUSD || "?";
+      setQuoteText(`${ethAmount} ETH ≈ ${outHuman} w🍖 (est. gas $${gasUsd})`);
+    } catch (e: any) {
+      setQuoteText(`Quote error: ${e?.message || "unknown"}`);
+    }
+  }, [ethAmount]);
 
   const handleViewToken = useCallback(async () => {
     const chartUrl = "https://www.dextools.io/app/en/base/pair-explorer/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578";
@@ -71,12 +112,26 @@ export default function Home() {
       </div>
 
       {/* Action Buttons */}
+      <div style={styles.card}>
+        <div style={styles.priceLabel}>Preview swap quote</div>
+        <input
+          value={ethAmount}
+          onChange={(e) => setEthAmount(e.target.value)}
+          placeholder="0.01"
+          style={styles.input}
+        />
+        <button style={styles.viewButton} onClick={handleQuote}>
+          Get Uniswap Quote
+        </button>
+        {quoteText && <div style={styles.result}>{quoteText}</div>}
+      </div>
+
       <button style={styles.swapButton} onClick={handleSwap}>
-        🔪 GRIND SOME MEAT
+        GRIND SOME MEAT
       </button>
 
       <button style={styles.viewButton} onClick={handleViewToken}>
-        📊 View Token
+        View Chart
       </button>
 
       {swapResult && <div style={styles.result}>{swapResult}</div>}
@@ -222,6 +277,16 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "12px",
     cursor: "pointer",
     marginBottom: "16px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px 12px",
+    borderRadius: "10px",
+    border: "1px solid rgba(255,255,255,0.15)",
+    background: "rgba(255,255,255,0.06)",
+    color: "#fff",
+    marginTop: "8px",
+    marginBottom: "10px",
   },
   result: {
     fontSize: "14px",
