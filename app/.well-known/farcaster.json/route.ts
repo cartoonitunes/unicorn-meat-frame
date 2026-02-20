@@ -22,7 +22,7 @@ export async function GET() {
       splashBackgroundColor: "#0a2a2a",
       subtitle: "The OG Ethereum Token on Base",
       description:
-        "Unicorn Meat -- born in 2016 from the original Unicorn contract on Ethereum, now on Base. Swap directly from Farcaster.",
+        "Unicorn Meat, born in 2016 from the original Unicorn contract on Ethereum, now on Base. Swap directly from Farcaster.",
       primaryCategory: "social",
       tags: ["defi", "meme", "ethereum", "base", "history"],
       heroImageUrl: "https://unicorn-meat-frame.vercel.app/og-farcaster.png",
