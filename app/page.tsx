@@ -14,14 +14,14 @@ export default function Home() {
   useEffect(() => {
     sdk.actions.ready();
 
-    // Fetch price from GeckoTerminal pool endpoint
+    // Fetch price from CoinGecko
     fetch(
-      "https://api.geckoterminal.com/api/v2/networks/base/pools/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578"
+      "https://api.coingecko.com/api/v3/simple/token_price/base?contract_addresses=0xa0ff877E3d4f3a108B1B3d5eB3e4369301D2b2D7&vs_currencies=usd"
     )
       .then((r) => r.json())
       .then((data) => {
-        const p = data?.data?.attributes?.base_token_price_usd;
-        if (p) setPrice(parseFloat(p).toFixed(6));
+        const p = data?.["0xa0ff877e3d4f3a108b1b3d5eb3e4369301d2b2d7"]?.usd;
+        if (p) setPrice(p.toFixed(6));
       })
       .catch(() => {});
   }, []);
@@ -44,7 +44,7 @@ export default function Home() {
   }, []);
 
   const handleViewToken = useCallback(async () => {
-    const chartUrl = "https://www.geckoterminal.com/base/pools/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578";
+    const chartUrl = "https://www.dextools.io/app/en/base/pair-explorer/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578";
     try {
       await sdk.actions.openUrl(chartUrl);
     } catch {
@@ -110,7 +110,7 @@ export default function Home() {
           style={styles.link}
           onClick={() =>
             sdk.actions.openUrl(
-              "https://www.geckoterminal.com/base/tokens/" + W_MEAT_BASE
+              "https://www.dextools.io/app/en/base/pair-explorer/0xb9ce62df766ffc0bb0d5d530e2dde32ec3baa578"
             )
           }
         >
